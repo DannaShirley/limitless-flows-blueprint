@@ -1,4 +1,4 @@
-## **Introduction**
+## Introduction
 This Genesys Cloud Developer blueprint explains how to connect Genesys Cloud to the Limitless GigCX SmartCrowd platform.
 
 The SmartCrowd platform is a fully managed service comprised of experts who are available 24/7, in any language. Experts are rewarded on a per-task basis, which means they provide support at a significantly lower cost than traditional cost centers.
@@ -23,7 +23,7 @@ see <https://www.limitlesstech.com/genesys/>
 
 [toc]
 
-## **Obtain required information for Limitless SmartCrowd**
+## Obtain required information for Limitless SmartCrowd
 
 To bring experts into conversations with your customers, you must connect Genesys Cloud to Limitless SmartCrowd. The expert crowd uses the SmartCrowd platform to receive conversations and respond to them via the web or via the Limitless Mobile App.
 
@@ -34,11 +34,11 @@ To connect Genesys Cloud to Limitless SmartCrowd:
    * Your group name  
    * Your user credentials so you can play the role of an expert in your group on the SmartCrowd platform
 
-## **Prepare the data actions**
+## Prepare the data actions
 
 You use data actions to call the Limitless APIs and pass the API key and group name to SmartCrowd. This enables you to submit questions and customer dialogues to Limitless.
 
-1. Install and activate the **Web Services Data Actions** integration and the **Genesys Cloud Data Actions**. For more information, see [About the web services data action](https://help.mypurecloud.com/?p=127163 "Goes to the About the web services data action article in the Genesys Cloud Resource Center").
+1. Install and activate the Web Services Data Actions integration and the Genesys Cloud data actions. For more information, see [About the web services data action](https://help.mypurecloud.com/?p=127163 "Goes to the About the web services data action article in the Genesys Cloud Resource Center").
 
 2. From the Data Actions folder, import all 12 of the data actions provided with this blueprint. For more information on how to import data actions, see [Import or export a data action for integrations](https://help.mypurecloud.com/?p=161024 "Goes to the Import or export a data action for integrations article in the Genesys Cloud Resource Center"). For more details about the specific data actions provided, see the [Data actions reference table](#data-action-reference-table "Goes to the Data action reference table section").
 
@@ -50,21 +50,21 @@ Each data action connects to an API. Some are Genesys Cloud APIs and some are Li
 
 |**Data action name**|**Integration**|**Genesys Cloud API**|**Used in**|**Purpose**|
 | :-: | :-: | :-: | :-: | :-: |
-|Limitless - Get Contact By Phone from Genesys v1|Genesys Cloud|/api/v2/externalcontacts/contacts?q=${input.phone}|- Open messaging flow|Looks up the Customer in the Genesys External Contacts using the phone number. Returns the Customers' First Name and first initial of their Last Name (this is used for personalization of responses) **Note**: In your contact center you may be using a CRM for this information and should use your CRM API to get the customer details) |
-|Limitless - Get Message Id Count from Genesys v1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}|- Open messaging flow- Chat flow|Counts the number of messages authored by the Customer for this Genesys Conversation. Used in logic to send additional customer dialogues to Limitless|
-|Limitless - Get Last N Message Ids from Genesys v1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}|- Open messaging flow|Returns the last N message ids of messages authored by the Customer on this Genesys Conversation. Used in logic to send additional customer dialogues to Limitless|
-|Limitless - Get Last Message from Genesys v1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}/messages/${input.messageId}|- Open messaging flow|Returns the Customer authored dialogue (e.g. message body) for a specific message so it can be sent to Limitless|
-|Limitless - Get Message Ids From Chat Conv By Id from Genesys v1|Genesys Cloud|/api/v2/conversations/chats/${input.conversationId}/messages?sortOrder=${input.sortOrder}|- Chat flow|Get any new message ids from the chat, oldest first|
-|Limitless - Get Message Ids From Chat Conv By Id And MsgId from Genesys v1|Genesys Cloud|/api/v2/conversations/chats/${input.conversationId}/messages?after=${input.messageId}&sortOrder=${input.sortOrder}|- Chat flow|Additionally searches with messageId/api/v2/conversations/chats/${input.conversationId}/messages?sortOrder=${input.sortOrder}vs./api/v2/conversations/chats/${input.conversationId}/messages?after=${input.messageId}&sortOrder=${input.sortOrder}
+|Limitless - Get Contact By Phone from Genesys Cloudv1|Genesys Cloud|/api/v2/externalcontacts/contacts?q=${input.phone}|- Open messaging flow|Looks up the Customer in the Genesys CloudExternal Contacts using the phone number. Returns the customer's first name and the first initial of their last name, which are used for personalization of responses. **Note**: If you use a CRM for this type of customer information, then use your CRM API to get these details. |
+|Limitless - Get Message Id Count from Genesys Cloudv1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}|- Open messaging flow- Chat flow|Counts the number of messages authored by the customer for this Genesys Cloud conversation. This is used to send additional customer dialogs to Limitless|
+|Limitless - Get Last N Message Ids from Genesys Cloudv1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}|- Open messaging flow|Returns the last N message Ids of messages authored by the customer during this Genesys Cloud conversation. This is used to send additional customer dialogs to Limitless|
+|Limitless - Get Last Message from Genesys Cloudv1|Genesys Cloud|/api/v2/conversations/messages/${input.conversationId}/messages/${input.messageId}|- Open messaging flow|Returns the customer-authored portion of a dialog (the message body) for a specific message record so it can be sent to Limitless.|
+|Limitless - Get Message Ids From Chat Conv By Id from Genesys Cloudv1|Genesys Cloud|/api/v2/conversations/chats/${input.conversationId}/messages?sortOrder=${input.sortOrder}|- Chat flow|Gets any new message Ids from the chat, oldest first.|
+|Limitless - Get Message Ids From Chat Conv By Id And MsgId from Genesys Cloudv1|Genesys Cloud|/api/v2/conversations/chats/${input.conversationId}/messages?after=${input.messageId}&sortOrder=${input.sortOrder}|- Chat flow|Additionally searches with messageId/api/v2/conversations/chats/${input.conversationId}/messages?sortOrder=${input.sortOrder}vs./api/v2/conversations/chats/${input.conversationId}/messages?after=${input.messageId}&sortOrder=${input.sortOrder}.
 |Limitless - Push Question to SmartCrowd v1|Web Services|N/A| - Open messaging flow - Email flow- Chat flow |Submits the question/conversation to Limitless.|
-|Limitless - Submit FollowUp Dialogue to SmartCrowd v1|Web Services|N/A| - Open messaging flow - Email Flow - Chat flow |Submits new customer-authored dialogues to Limitless.|
+|Limitless - Submit FollowUp Dialogue to SmartCrowd v1|Web Services|N/A| - Open messaging flow - Email Flow - Chat flow |Submits new customer-authored dialogs to Limitless.|
 |Limitless - Return from SmartCrowd v1|Web Services|N/A| - Open messaging flow - Chat flow |Tells SmartCrowd to close its message lifecycle because Genesys Cloud has brought an agent into the conversation.|
 |Limitless - Get Full Event from SmartCrowd v1|Web Services|N/A| - Open messaging flow - Email flow - Chat flow</p>|Retrieves Expert Dialogue and SmartCrowd Message Status events from the Limitless event queue.|
-|Limitless Send Email Reply v1|Web Services|N/A|- Email flow|Send the Expert response via email using an SMTP server.|
-|Limitless - Shorten Link v1|Web Services|N/A| - Open messaging flow - Email flow - Chat flow |Calls a third-party url shortener to reduce the size of the CSAT link. The example url here is for Bitly: <https://bitly.com/> and to use that service you will need a Bitly account and then to input your account specific token into the header. **Note**:You can also replace Bitly with your url shortener of choice.|
+|Limitless Send Email Reply v1|Web Services|N/A|- Email flow|Sends the Expert response via email using an SMTP server.|
+|Limitless - Shorten Link v1|Web Services|N/A| - Open messaging flow - Email flow - Chat flow |Calls a third-party URL shortener, such as [Bitly](https://bitly.com/ "Goes to the Bitly website"), to reduce the size of the CSAT link. **Note**:You can also replace Bitly with your URL shortener of choice. To use Bitly, you will need a Bitly account and you will need to put your account-specific token into the header. |
 {: class="table-striped table-bordered"}
 
-## **Import the Architect flows**
+## Import the Architect flows
 
 In this solution, Architect flows handle the following tasks:
 
@@ -77,12 +77,12 @@ In this solution, Architect flows handle the following tasks:
 To build this solution, you need to import these Architect flows:
 
 - **Open messaging** - Connect Limitless to your open messaging channels
-- **Chat** - Connect Limitless to your web chat channels (note: This flow is compatible with web chat v1.1 and web chat v2)
+- **Chat** - Connect Limitless to your web chat channels. **Note**: This flow is compatible with web chat v1.1 and web chat v2.
 - **Email** - Connect Limitless to your email channels.
 
 For information about how to import Architect flows, see [Import or export a flow](https://help.mypurecloud.com/?p=2730 "Goes to the Import or export a flow article in the Genesys Cloud Resource Center").
 
-### **Set the flow variables**
+### Set the flow variables
 
 For each Architect flow, set the necessary flow variables.
 
@@ -104,30 +104,37 @@ For each Architect flow, set the necessary flow variables.
 For more information about managing variables, see [Manage a variable](https://help.mypurecloud.com/?p=109357 "Opens the Manage a variable article in the Genesys Cloud Resource Center").
 
 
+### Connect Limitless to your Genesys Cloud open messaging channel
+
+To connect Limitless to your open messaging channel, use the Open messaging flow.
+
+***QUESTION***: I don't see an open messaging flow in the Architect Flows folder of this blueprint solution.
+
 ### Flow states
+
 Each flow has two states:
 
 - **Starting State** - The Starting State represents a very simple flow that engages Limitless GigCX by calling the Limitless Expert state. Other than for demos you probably won’t use this “Starting State” as you will have your own flows that you wish to extend to the Expert Crowd.
-- **Limitless Expert** - This state contains the connectivity and conversation lifecycle management when the conversation is being handled by Expert Crowd via the SmartCrowd platform. The logic contained in this state is described in more detail below, but you should only make changes here in consultation with the Limitless team. This state has been designed so that you can simply drop it into your existing Genesys flows and bring the Expert Crowd into conversations where you wish.
-
-### The open messaging flow
-
-Use this to connect Limitless to your open messaging channels.
+- **Limitless Expert** - This state contains the connectivity and conversation lifecycle management logic when the conversation is being handled by Expert Crowd via the SmartCrowd platform. The logic contained in this state is described in more detail below, but you should make changes here only in consultation with the Limitless team. This state has been designed so that you can simply drop it into your existing Genesys Cloud flows and bring the Expert Crowd into conversations when you wish.
 
 #### Starting state
 
-This state contains:
+The Starting state contains:
 
-- ***A Send Response Block*** - This contains debugging information that confirms you are in the Limitless Demo and the Genesys Message ID
+- ***A Send Response Block*** - This contains debugging information that confirms you are in the Limitless Demo and the Genesys Cloud Message ID
 - ***Switch Block***:
-  - Case 1 - A simple example showing routing straight to an Agent rather than the GigCX Crowd
-  - Case 2 - A simple example showing where automation/chatbot could be used
-  - Case 3 - Showing routing to Limitless via the ‘Limitless Expert’ state
+  - Case 1 - Shows how to route messages straight to a Genesys Cloud agent rather than the GigCX Crowd
+  - Case 2 - Shows where you could use automation or a chatbot  
+  - Case 3 - Shows where you could route to Limitless via the **Limitless Expert** state
 
-![](images/004.png)
-#### **Limitless Expert State**
+![Starting state](images/004.png)
+
+#### Limitless Expert State
+
 This state contains the connectivity and conversation lifecycle management when the conversation is being handled by Expert Crowd via the SmartCrowd platform.
-##### **Look Up the Customer:**
+
+##### Look up the customer
+
 The very first step in our "Limitless Expert" flow is a Call Data Action using the ‘Get Contact By Phone' action.
 
 ![](images/005.png)
@@ -137,11 +144,11 @@ This block uses the Customer’s phone number to retrieve Customer First Name an
 ***An important note here on ‘Transfer to ACD’ blocks in the flow*** - You can see that exception handling throughout the flow sends the conversation to an ‘Escalated’ queue via a ‘Transfer to ACD’ block. This ‘Escalated’ queue should be replaced with the Agent queue that you want conversations to go if the ‘Limitless Expert' state hits a problem or if the Expert Crowd are unable to help the customer.
 
 ![](images/006.png)
-##### **Submit the Question to Limitless:**
-Next, we have another Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys Conversation ID and Limitless Message ID are exchanged.
+##### Submit the Question to Limitless
+Next, we have another Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys CloudConversation ID and Limitless Message ID are exchanged.
 
 ![](images/007.png)
-##### **Enter The Loop:**
+##### Enter The Loop
 After successfully submitting the customer question to Limitless the ‘Limitless Expert’ flow prepares to enter a loop. The Loop itself performs two functions:
 
 1. To monitor the customer side of the conversation - detecting and submitting additional Customer dialogues to Limitless.
@@ -156,7 +163,7 @@ To prepare for entering the loop the flow does the following:
 
 ![](images/008.png)
 
-##### **The Loop**
+##### The Loop
 
 At the start of each loop the number of customer dialogues on the conversation is compared with the previous number at the start of the last loop. This is done by the Action: Get Message ID Count and the subsequent Decision block.
 
@@ -168,7 +175,7 @@ If the number is not greater than the saved number, the loop moves to the Limitl
 
 If neither the customer nor the expert present dialogue, then the Wait block is executed. This Wait keeps the loop from “running away” and reaching the LoopMax count too quickly. A smaller value in the WaitSeconds flow variable can make the whole experience feel more responsive. However, too small of a WaitSeconds value will cause the entire loop to complete too soon. Again, please consult with the Limitless team before you alter these default values.
 
-##### **Customer Dialogue Side of the Loop**
+##### Customer Dialog Side of the Loop
 
 This part of the Loop picks up additional Customer dialogues to send to Limitless. It picks up the number of Customer dialogues that have been authored since the last send to Limitless and then loops through them, submitting each one to Limitless via the ‘Limitless Submit Follow Up Dialogue’ Data Action.
 
@@ -176,7 +183,7 @@ If the customer at any point includes the word “Agent” then the loop uses an
 
 ![](images/010.png)
 
-##### **Limitless Side of the Loop**
+##### Limitless Side of the Loop
 
 This part of the Loop monitors a Limitless Event queue for Expert dialogues and Limitless status events that need to trigger specific actions in the conversation. This part of the Loop starts with retrieving the events from the queue via the ‘Limitless Get Full Event Prod’ Data Action.
 
@@ -200,11 +207,11 @@ The subsequent Event Type block then evaluates the following cases:
 
 ![](images/014.png)
 
-### **The chat flow**
+### The chat flow
 
 Use this to connect Limitless to your web chat channels (note: This flow is compatible with web chat v1.1 & web chat v2)
 
-#### **Starting State**
+#### Starting state
 
 This state begins by welcoming the customer and checking there is a customer message to respond to.
 
@@ -218,17 +225,17 @@ Once this has been established then the customers chat is routed to Limitless vi
 
 ![](images/016.png)
 
-#### **Limitless Expert State**
+#### Limitless Expert State
 
 This state contains the connectivity and conversation lifecycle management when the conversation is being handled by Expert Crowd via the SmartCrowd platform.
 
-#### **Submit the Question to Limitless:**
+#### Submit the Question to Limitless
 
-First, we have a Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys Conversation ID and Limitless Message ID are exchanged.
+First, we have a Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys CloudConversation ID and Limitless Message ID are exchanged.
 
 ![](images/017.png)
 
-#### **Enter The Loop:**
+#### Enter The Loop
 
 After successfully submitting the customer question to Limitless the ‘Limitless Expert’ flow prepares to enter a loop. The Loop itself performs two functions:
 
@@ -244,7 +251,7 @@ To prepare for entering the loop the flow does the following:
 1. Attaches the Limitless Message ID to the Conversation - This is used to signify that a conversation is ‘with Limitless’ and this association is removed later in the flow when the Limitless portion of the conversation is over.
 1. Sets the Customer Message Count to 1, signifying that the question has been submitted to Limitless. This value is used within the loop to decide if additional customer dialogues need to be sent to Limitless.
 
-#### **The Loop**
+#### The Loop
 
 At the start of each loop the number of customer dialogues on the conversation is compared with the previous number at the start of the last loop. This is done by the Action: Get Message ID Count and the subsequent Decision block.
 
@@ -256,7 +263,7 @@ If neither the customer nor the expert present dialogue, then the Wait block is
 
 ![](images/019.png)
 
-##### **Customer Dialogue Side of the Loop**
+##### Customer Dialog Side of the Loop
 
 This part of the Loop picks up additional Customer dialogues to send to Limitless. It picks up the number of Customer dialogues that have been authored since the last send to Limitless and then loops through them, submitting each one to Limitless via the ‘Limitless Submit Follow Up Dialogue’ Data Action.
 
@@ -264,7 +271,7 @@ If the customer at any point includes the word “Agent” then the loop uses an
 
 ![](images/020.png)
 
-##### **Limitless Side of the Loop**
+##### Limitless Side of the Loop
 
 This part of the Loop monitors a Limitless Event queue for Expert dialogues and Limitless status events that need to trigger specific actions in the conversation. This part of the Loop starts with retrieving the events from the queue via the ‘Limitless Get Full Event Prod’ Data Action.
 
@@ -288,15 +295,15 @@ The subsequent Event Type block then evaluates the following cases:
 
 ![](images/024.png)
 
-### **The email flow**
+### The email flow
 
 Use this to connect Limitless to your email channels
 
-#### **Starting State**
+#### Starting State
 
 This state contains:
 
-- ***A Send Response Block*** - This contains debugging information that confirms you are in the Limitless Demo and the Genesys Message ID
+- ***A Send Response Block*** - This contains debugging information that confirms you are in the Limitless Demo and the Genesys CloudMessage ID
 - ***Switch***:
   - ***Case 1*** - Showing routing straight to an Agent rather than the GigCX Crowd
   - ***Case 2*** - Showing where automation/chatbot could be used (Self help)
@@ -304,15 +311,15 @@ This state contains:
 
 ![](images/025.png)
 
-- ***Default*** - Routing the original question to the expert. This part of the flow contains a Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys Conversation ID and Limitless Message ID are exchanged.
+- ***Default*** - Routing the original question to the expert. This part of the flow contains a Call Data Action using the ‘Limitless Push Question’ action. This submits the Customer’s question to the Limitless SmartCrowd platform, and it becomes visible to Experts in the GigCX Crowd. In the integration the Genesys CloudConversation ID and Limitless Message ID are exchanged.
 
 ![](images/026.png)
 
-#### **Limitless Expert State**
+#### Limitless Expert State
 
 This state contains the connectivity and conversation lifecycle management when the conversation is being handled by Expert Crowd via the SmartCrowd platform.
 
-#### **Enter The Loop:**
+#### Enter The Loop
 
 After successfully submitting the customer question to Limitless the ‘Limitless Expert’ flow prepares to enter a loop. The Loop itself performs one function, to monitor the Limitless side of the conversation - detecting and displaying Expert dialogues to the Customer and monitoring the Lifecycle state of the Limitless message within the SmartCrowd platform and taking appropriate action based on these statuses.
 
@@ -322,13 +329,13 @@ By default, the Loop will execute 90 times with a wait time of 8 seconds. These 
 
 To prepare for entering the loop the flow attaches the Limitless Message ID to the Conversation - This is used to signify that a conversation is ‘with Limitless’ and this association is removed later in the flow when the Limitless portion of the conversation is over.
 
-#### **The Loop**
+#### The Loop
 
 The loop picks up and sends Expert dialogues and also monitors the status of the message within SmartCrowd so appropriate actions can be taken within the conversation.
 
 If the expert presents a dialogue, then the Wait block is executed. This Wait keeps the loop from “running away” and reaching the LoopMax count too quickly. A smaller value in the WaitSeconds flow variable can make the whole experience feel more responsive. However, too small of a WaitSeconds value will cause the entire loop to complete too soon. Again, please consult with the Limitless team before you alter these default values.
 
-##### **Monitoring Limitless**
+##### Monitoring Limitless
 
 This part of the Loop monitors a Limitless Event queue for Expert dialogues and Limitless status events that need to trigger specific actions in the conversation. This part of the Loop starts with retrieving the events from the queue via the ‘Limitless Get Full Event Prod’ Data Action. The subsequent Event Type block then evaluates the following cases:
 
@@ -348,11 +355,11 @@ This part of the Loop monitors a Limitless Event queue for Expert dialogues and 
 
 ![](images/030.png)
 
-## **Cloud Analytics & Reporting**
+## Cloud Analytics and Reporting
 
-The use of the Limitless flows has no impact on Cloud Analytics or Genesys reporting.
+The use of the Limitless flows has no impact on Cloud Analytics or Genesys Cloud reporting.
 
-## **Other Considerations**
+## Other Considerations
 
 - ***Flow Outcomes*** - The blueprint does not contain Flow Outcomes to avoid validation errors on import. You should consider what Flow Outcomes you want and introduce these to Flow.
 
